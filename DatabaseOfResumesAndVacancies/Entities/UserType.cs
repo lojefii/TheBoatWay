@@ -2,7 +2,6 @@
 {
     public enum UserType
     { 
-        Administrator, 
         Manager, 
         User 
     }

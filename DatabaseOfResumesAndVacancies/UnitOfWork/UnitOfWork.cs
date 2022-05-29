@@ -8,52 +8,61 @@ namespace DAL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
+
         private DatabaseContext context;
         private IRepository<Resume> resumes;
         private IRepository<Vacancy> vacancies;
         private IRepository<User> users;
+        public UnitOfWork()
+        {
+            //this.context = new DatabaseContext();
+        }
+
         public IRepository<Resume> Resumes
         {
             get
             {
                 if (resumes == null)
-                    resumes = new GenericRepository<Resume>(context);
+                {
+                    resumes = new GenericRepository<Resume>(new DatabaseContext());
+                }
                 return resumes;
             }
         }
-
         public IRepository<Vacancy> Vacancies
         {
             get
             {
                 if (vacancies == null)
-                    vacancies = new GenericRepository<Vacancy>(context);
+                {
+                    vacancies = new GenericRepository<Vacancy>(new DatabaseContext());
+                }
                 return vacancies;
             }
         }
-
         public IRepository<User> Users
         {
             get
             {
                 if (users == null)
-                    users = new GenericRepository<User>(context);
+                {
+                    users = new GenericRepository<User>(new DatabaseContext());
+                }
                 return users;
             }
         }
-
         public void DeleteDB()
         {
-            context.Database.Delete();
+            new DatabaseContext().Database.Delete();
         }
         private bool disposed = false;
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (!disposed)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    new DatabaseContext().Dispose();
                 }
             }
             this.disposed = true;
